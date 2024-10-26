@@ -2,6 +2,9 @@
 pandas
 numpy
 
+# Ploting
+plotly
+
 # Taipy for web app and dashboard creation
 taipy
 
