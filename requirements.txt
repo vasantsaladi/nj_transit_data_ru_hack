@@ -11,6 +11,6 @@ taipy
 # Machine learning
 scikit-learn
 
-
-
+# Matplotlib
+matplotlib
 
