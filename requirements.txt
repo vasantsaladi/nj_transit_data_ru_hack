@@ -1,0 +1,13 @@
+# Core data analysis and visualization
+pandas
+numpy
+
+# Taipy for web app and dashboard creation
+taipy
+
+# Machine learning
+scikit-learn
+
+
+
+
