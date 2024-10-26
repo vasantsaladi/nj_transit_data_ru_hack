@@ -14,3 +14,8 @@ scikit-learn
 # Matplotlib
 matplotlib
 
+# Testing
+pytest
+
+
+
