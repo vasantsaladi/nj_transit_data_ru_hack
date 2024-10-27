@@ -1,3 +1,5 @@
+import streamlit as st
+
 progress_bar = st.sidebar.progress(0)
 status_text = st.sidebar.empty()
 last_rows = np.random.randn(1, 1)
