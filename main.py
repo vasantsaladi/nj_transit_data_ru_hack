@@ -33,59 +33,79 @@ if __name__ == "__main__":
     # Initialize Core first
     tp.Core().run()
     
-    # Define a more comprehensive style dictionary
-    style = {
-        # Primary Colors
-        "color_primary": "#1B2C5B",      # NJ Transit navy blue
-        "color_secondary": "#FFFFFF",     # White
-        "color_background": "#FFFFFF",    # White background
-        "color_paper": "#F5F5F5",        # Light gray for cards/panels
+    # Define Stylekit theme based on NJ Transit branding
+    stylekit = {
+        # Core brand colors
+        "--tp-color-primary": "#1B2C5B",        # NJ Transit Navy Blue
+        "--tp-color-secondary": "#FFFFFF",       # White
+        "--tp-color-background": "#FFFFFF",      # White background
         
-        # Text Colors
-        "color_text_primary": "#1B2C5B",  # Navy blue for primary text
-        "color_text_secondary": "#666666", # Dark gray for secondary text
+        # Text colors
+        "--tp-color-text-primary": "#1B2C5B",   # Navy text
+        "--tp-color-text-secondary": "#666666",  # Secondary text
+        "--tp-color-text-inverse": "#FFFFFF",    # White text for dark backgrounds
         
-        # Component Colors
-        "button": {
-            "background_color": "#1B2C5B",
-            "color": "#FFFFFF",
-            "border_radius": "4px",
-        },
-        "button_secondary": {
-            "background_color": "#FFFFFF",
-            "color": "#1B2C5B",
-            "border": "1px solid #1B2C5B",
-            "border_radius": "4px",
-        },
+        # Component specific
+        "--tp-border-radius": "8px",
+        "--tp-border-color": "#1B2C5B",
         
-        # Chart Colors
-        "chart_primary_color": "#1B2C5B",
-        "chart_colors": ["#1B2C5B", "#4A90E2", "#E2844A", "#50C878"],
+        # Cards and containers
+        "--tp-card-background": "#FFFFFF",
+        "--tp-card-border": "1px solid #1B2C5B",
+        "--tp-card-shadow": "0 2px 4px rgba(27, 44, 91, 0.1)",
+        
+        # Buttons
+        "--tp-button-background": "#1B2C5B",
+        "--tp-button-text": "#FFFFFF",
+        "--tp-button-border": "none",
+        "--tp-button-hover-background": "#2d4580",
+        
+        # Charts
+        "--tp-chart-primary": "#1B2C5B",
+        "--tp-chart-grid": "#E5E5E5",
+        "--tp-chart-text": "#1B2C5B",
+        
+        # Metrics
+        "--tp-metric-text": "#1B2C5B",
+        "--tp-metric-font-size": "24px",
+        "--tp-metric-font-weight": "bold",
+        
+        # Selectors
+        "--tp-selector-border": "1px solid #1B2C5B",
+        "--tp-selector-border-radius": "4px",
+        "--tp-selector-padding": "0.5rem",
         
         # Tables
-        "table_header_background": "#1B2C5B",
-        "table_header_color": "#FFFFFF",
-        "table_cell_background": "#FFFFFF",
-        "table_cell_color": "#1B2C5B",
+        "--tp-table-header-background": "#1B2C5B",
+        "--tp-table-header-text": "#FFFFFF",
+        "--tp-table-border": "1px solid rgba(27, 44, 91, 0.2)",
         
-        # Controls
-        "selector_background": "#FFFFFF",
-        "selector_border": "1px solid #1B2C5B",
-        "selector_color": "#1B2C5B",
+        # Spacing
+        "--tp-spacing-1": "0.5rem",
+        "--tp-spacing-2": "1rem",
+        "--tp-spacing-3": "1.5rem",
         
-        # Layout
-        "margin": "1rem",
-        "padding": "1rem",
-        "border_radius": "8px",
+        # Custom classes
+        "text-center": {"text-align": "center"},
+        "color-primary": {"color": "#1B2C5B"},
+        "text-bold": {"font-weight": "bold"},
+        "mb-3": {"margin-bottom": "1rem"},
+        "mb-4": {"margin-bottom": "1.5rem"},
+        "mt-4": {"margin-top": "1.5rem"},
+        "p-2": {"padding": "0.5rem"},
+        "p-4": {"padding": "1.5rem"},
+        "gap-3": {"gap": "1rem"},
+        "gap-4": {"gap": "1.5rem"}
     }
 
-    # Create GUI with specific host and port
+    # Create GUI with Stylekit
     gui = Gui(pages=pages)
     gui.run(
         title="NJ Transit Analysis",
-        style=style,
-        favicon="assets/NJ_Transit_Logo.png",  # Add the favicon path here
-        port=5001,  # Use a specific different port
+        stylekit=stylekit,
+        favicon="assets/NJ_Transit_Logo.png",
+        dark_mode=False,  # Ensure light mode for NJ Transit branding
+        port=5001,
         host="0.0.0.0",
         debug=True
     )

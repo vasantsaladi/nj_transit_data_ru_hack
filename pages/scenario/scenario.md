@@ -1,28 +1,46 @@
-# Create your scenario:
+# Scenario Analysis{: .text-center .color-primary .mb-4}
 
-<|layout|columns=3 1 1 1 1|
+<|navbar|>
+
+<|card|
+
+## Scenario Configuration{: .color-primary .mb-3}
+
+<|layout|columns=3 1 1 1 1|gap=3|
 <|{scenario}|scenario_selector|>
 
-**Prediction date** <br/>
+<|part|
+**Prediction date**{: .color-primary} <br/>
 <|{day}|date|active={scenario}|not with_time|>
-
-**Max capacity** <br/>
-<|{max_capacity}|number|active={scenario}|>
-
-**Number of predictions** <br/>
-<|{n_predictions}|number|active={scenario}|>
-
-<br/> <|Save|button|on_action=save|active={scenario}|>
 |>
- 
+
+<|part|
+**Max capacity**{: .color-primary} <br/>
+<|{max_capacity}|number|active={scenario}|>
+|>
+
+<|part|
+**Number of predictions**{: .color-primary} <br/>
+<|{n_predictions}|number|active={scenario}|>
+|>
+
+<|part|
+<br/>
+<|Save|button|on_action=save|active={scenario}|>
+|>
+|>
+|>
+
+<|card|
+
+## Scenario Details{: .color-primary .mb-3}
+
 <|{scenario}|scenario|on_submission_change=submission_change|>
+|>
 
-<|{predictions_dataset}|chart|x=Date|y[1]=Historical values|type[1]=bar|y[2]=Predicted values ML|y[3]=Predicted values Baseline|>
+<|card|
 
-# Data Node Exploration
+## Predictions Visualization{: .color-primary .mb-3}
 
-<|layout|columns=1 5|
-<|{data_node}|data_node_selector|>
-
-<|{data_node}|data_node|>
+<|{predictions_dataset}|chart|x=Date|y[1]=Historical values|type[1]=bar|y[2]=Predicted values ML|y[3]=Predicted values Baseline|height=400px|width=100%|>
 |>

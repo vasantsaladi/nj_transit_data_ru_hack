@@ -1,31 +1,45 @@
 <|navbar|>
 
-# Welcome to NJ Transit Data Analysis
+<|part|class_name=text-center mb-4|
+![NJ Transit Logo](assets/NJ_Transit_Logo.png){: width=300px}
+|>
 
-This is the home page of our application.
+# Welcome to NJ Transit Data Analysis{: .text-center .color-primary .mb-4}
 
 <|layout|columns=1 1 1|gap=2rem|
 <|card|
 
-### Daily Ridership
+### Daily Ridership{: .color-primary}
 
 <|metric|value=total_ridership|format=,.0f|>
 |>
 
 <|card|
 
-### On-Time Performance
+### On-Time Performance{: .color-primary}
 
 <|metric|value=on_time_percentage|format=.1f%|>
 |>
 
 <|card|
 
-### Active Routes
+### Active Routes{: .color-primary}
 
 <|metric|value=active_routes|format=,.0f|>
 |>
 |>
+
+<|card|
+
+## Quick Navigation{: .color-primary .mb-3}
+
+<|layout|columns=1 1 1|gap=4|
+<|Navigate to Data Visualization|button|link=/data_viz|>
+<|Create New Scenario|button|link=/scenario|>
+<|View Performance Analysis|button|link=/performance|>
+|>
+|>
+</code_block_to_apply_changes_from>
 
 <style>
 .card {
@@ -47,12 +61,6 @@ h3 {
     color: #1B2C5B;
 }
 
-.selector {
-    border: 1px solid #1B2C5B;
-    border-radius: 4px;
-    padding: 0.5rem;
-}
-
 .button {
     background-color: #1B2C5B;
     color: white;
@@ -60,18 +68,26 @@ h3 {
     border-radius: 4px;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    width: 100%;
 }
 
 .button:hover {
     background-color: #2d4580;
 }
 
-.table thead th {
-    background-color: #1B2C5B;
-    color: white;
+.mb-4 {
+    margin-bottom: 1.5rem;
 }
 
-.table tbody td {
-    border-bottom: 1px solid #1B2C5B20;
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.color-primary {
+    color: #1B2C5B;
 }
 </style>
