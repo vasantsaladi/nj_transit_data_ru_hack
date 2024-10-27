@@ -13,11 +13,13 @@ st.set_page_config(
 )
 
 # Load and display the logo
-logo_path = "assets/new_jesry_transit_logo.png"
+logo_path = "/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/assets/NJ_Transit_Logo.png"
 logo = Image.open(logo_path)
-st.image(logo, width=500)  # Increased width to 500
-st.write("# Rail Delay Prediction 🚆")
-
+col1, col2 = st.columns([1, 3])
+with col1:
+    st.image(logo, width=100)
+with col2:
+    st.write("# Welcome to NJ Transit Rail Delay Prediction 👋")
 
 # Sidebar
 st.sidebar.success("Station")
@@ -81,20 +83,18 @@ day_number = day_to_number(day_of_week)
 if st.button('Predict Delay'):
     predicted_delay = predict_delay(hour_of_day, day_number, from_id, to_id)
 
-    # Display prediction with larger font and color
-    st.write("## Predicted Delay")
-    st.markdown(f"<h1 style='text-align: center; color: #1E90FF;'>{predicted_delay:.2f} minutes</h1>", unsafe_allow_html=True)
+    # Display prediction
+    st.write(f"## Predicted Delay")
+    st.write(f"The predicted delay for your journey is: **{predicted_delay:.2f} minutes**")
 
-    # Use columns for a more structured layout
-    col1, col2, col3 = st.columns([1,3,1])
-    with col2:
-        # Provide some context
-        if predicted_delay < 5:
-            st.success("Your train is likely to be on time or only slightly delayed.")
-        elif predicted_delay < 15:
-            st.warning("There might be a minor delay. Consider allowing a little extra time for your journey.")
-        else:
-            st.error("There could be a significant delay. Please plan accordingly and check for any service updates.")
+    # Provide some context
+    if predicted_delay < 5:
+        st.write("Your train is likely to be on time or only slightly delayed.")
+    elif predicted_delay < 15:
+        st.write("There might be a minor delay. Consider allowing a little extra time for your journey.")
+    else:
+        st.write("There could be a significant delay. Please plan accordingly and check for any service updates.")
+
 # Display collected inputs
 st.write("### Input Summary")
 st.write(f"**Hour of the Day:** {hour_of_day:02d}:00")
