@@ -12,13 +12,29 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load and display the logo
+# Custom CSS to make the title responsive
+st.markdown("""
+    <style>
+    .responsive-title {
+        font-size: calc(1.5rem + 1.5vw);
+        font-weight: bold;
+        line-height: 1.2;
+        padding-top: 0.5rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Load and display the logo with title beside it
 logo_path = "assets/new_jesry_transit_logo.png"
 logo = Image.open(logo_path)
-st.image(logo, width=500)  # Increased width to 500
-st.write("# Rail Delay Prediction 🚆")
 
+col1, col2 = st.columns([1, 3])  # Adjust the ratio as needed
 
+with col1:
+    st.image(logo, use_column_width=True)  # Makes logo responsive
+
+with col2:
+    st.markdown('<p class="responsive-title">NJ Transit Rail Delay Prediction 🚆</p>', unsafe_allow_html=True)
 # Sidebar
 st.sidebar.success("Station")
 
@@ -97,7 +113,7 @@ if st.button('Predict Delay'):
             st.error("There could be a significant delay. Please plan accordingly and check for any service updates.")
 # Display collected inputs
 st.write("### Input Summary")
-st.write(f"**Hour of the Day:** {hour_of_day:02d}:00")
+st.write(f"**Hour of the Day:** {time_input}")
 st.write(f"**From Station:** {from_station} (ID: {from_id})")
 st.write(f"**To Station:** {to_station} (ID: {to_id})")
 st.write(f"**Day of the Week:** {day_of_week}")
