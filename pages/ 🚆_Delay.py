@@ -12,15 +12,29 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load and display the logo
-logo_path = "/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/assets/NJ_Transit_Logo.png"
-logo = Image.open(logo_path)
-col1, col2 = st.columns([1, 3])
-with col1:
-    st.image(logo, width=100)
-with col2:
-    st.write("# Welcome to NJ Transit Rail Delay Prediction 👋")
+# Custom CSS to make the title responsive
+st.markdown("""
+    <style>
+    .responsive-title {
+        font-size: calc(1.5rem + 1.5vw);
+        font-weight: bold;
+        line-height: 1.2;
+        padding-top: 0.5rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
+# Load and display the logo with title beside it
+logo_path = "assets/new_jesry_transit_logo.png"
+logo = Image.open(logo_path)
+
+col1, col2 = st.columns([1, 3])  # Adjust the ratio as needed
+
+with col1:
+    st.image(logo, use_column_width=True)  # Makes logo responsive
+
+with col2:
+    st.markdown('<p class="responsive-title">NJ Transit Rail Delay Prediction 🚆</p>', unsafe_allow_html=True)
 # Sidebar
 st.sidebar.success("Station")
 
@@ -83,21 +97,23 @@ day_number = day_to_number(day_of_week)
 if st.button('Predict Delay'):
     predicted_delay = predict_delay(hour_of_day, day_number, from_id, to_id)
 
-    # Display prediction
-    st.write(f"## Predicted Delay")
-    st.write(f"The predicted delay for your journey is: **{predicted_delay:.2f} minutes**")
+    # Display prediction with larger font and color
+    st.write("## Predicted Delay")
+    st.markdown(f"<h1 style='text-align: center; color: #1E90FF;'>{predicted_delay:.2f} minutes</h1>", unsafe_allow_html=True)
 
-    # Provide some context
-    if predicted_delay < 5:
-        st.write("Your train is likely to be on time or only slightly delayed.")
-    elif predicted_delay < 15:
-        st.write("There might be a minor delay. Consider allowing a little extra time for your journey.")
-    else:
-        st.write("There could be a significant delay. Please plan accordingly and check for any service updates.")
-
+    # Use columns for a more structured layout
+    col1, col2, col3 = st.columns([1,3,1])
+    with col2:
+        # Provide some context
+        if predicted_delay < 5:
+            st.success("Your train is likely to be on time or only slightly delayed.")
+        elif predicted_delay < 15:
+            st.warning("There might be a minor delay. Consider allowing a little extra time for your journey.")
+        else:
+            st.error("There could be a significant delay. Please plan accordingly and check for any service updates.")
 # Display collected inputs
 st.write("### Input Summary")
-st.write(f"**Hour of the Day:** {hour_of_day:02d}:00")
+st.write(f"**Hour of the Day:** {time_input}")
 st.write(f"**From Station:** {from_station} (ID: {from_id})")
 st.write(f"**To Station:** {to_station} (ID: {to_id})")
 st.write(f"**Day of the Week:** {day_of_week}")

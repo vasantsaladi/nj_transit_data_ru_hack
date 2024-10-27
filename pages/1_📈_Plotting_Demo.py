@@ -29,8 +29,9 @@ def load_data():
     # Example loading - adjust paths as needed
     bus_performance = pd.read_csv('/Users/vasantsaladi/Documents/GitHub/nj_transit_data_ru_hack/data/lit/BUS_OTP_DATA.csv')
     rail_performance = pd.read_csv('/Users/vasantsaladi/Documents/GitHub/nj_transit_data_ru_hack/data/lit/RAIL_OTP_DATA.csv')
-    bus_routes = pd.read_excel('/Users/vasantsaladi/Documents/GitHub/nj_transit_data_ru_hack/data/lit/Bus Routes & Stop IDs.xlsx')
-    return bus_performance, rail_performance, bus_routes
+    bus_performance = pd.read_csv('/Users/vasantsaladi/Documents/GitHub/nj_transit_data_ru_hack/data/MDBF/BUS_MDBF_DATA.csv')
+    rail_performance = pd.read_csv('/Users/vasantsaladi/Documents/GitHub/nj_transit_data_ru_hack/data/MDBF/RAIL_MDBF_DATA.csv')
+    return bus_performance, rail_performance
 
 # Main dashboard layout
 def main():
@@ -48,8 +49,7 @@ def main():
         st.metric("Average Bus On-Time %", "92.5%", "1.2%")
     with col2:
         st.metric("Average Rail On-Time %", "94.1%", "-0.8%")
-    with col3:
-        st.metric("Total Routes", "871", "5")
+
 
     # Performance Analysis
     st.header("Performance Analysis")
