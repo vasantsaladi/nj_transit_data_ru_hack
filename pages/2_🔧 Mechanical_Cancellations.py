@@ -4,7 +4,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 import calendar
 
 # Set page config
@@ -12,37 +12,53 @@ st.set_page_config(layout="wide", page_title="NJ Transit Mechanical Cancellation
 
 @st.cache_data
 def load_data():
-    # Load rail cancellations data
-    df = pd.read_csv('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/data/RAIL_CANCELLATIONS_DATA.csv')
+    # Load both datasets
+    mechanical_df = pd.read_csv('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/data/RAIL_CANCELLATIONS_DATA.csv')
+    train_df = pd.read_csv('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/data/Combined/cleaned_train_data.csv')
     
-    # Clean and prepare data
-    df['MONTH'] = df['MONTH'].str.strip()
-    df = df[df['CATEGORY'].str.contains('Mechanical', na=False)]
+    # Clean mechanical data
+    mechanical_df['MONTH'] = mechanical_df['MONTH'].str.strip()
+    mechanical_df = mechanical_df[mechanical_df['CATEGORY'].str.contains('Mechanical', na=False)]
     
-    # Convert month names to numbers
+    # Convert month names to numbers in mechanical data
     month_map = {
         'JANUARY': 1, 'FEBRUARY': 2, 'MARCH': 3, 'APRIL': 4,
         'MAY': 5, 'JUNE': 6, 'JULY': 7, 'AUGUST': 8,
         'SEPTEMBER': 9, 'OCTOBER': 10, 'NOVEMBER': 11, 'DECEMBER': 12
     }
-    df['MONTH_NUM'] = df['MONTH'].map(month_map)
+    mechanical_df['MONTH_NUM'] = mechanical_df['MONTH'].map(month_map)
     
-    # Create date column for better visualization
-    df['DATE'] = pd.to_datetime(df.apply(lambda x: f"{x['YEAR']}-{x['MONTH_NUM']:02d}-01", axis=1))
+    # Merge with train data
+    train_df['MONTH_NUM'] = train_df['MONTH'].map(month_map)
+    merged_df = pd.merge(
+        mechanical_df,
+        train_df[['YEAR', 'MONTH_NUM', 'MEAN_DISTANCE_BEFORE_FAILURE', 'ON_TIME_PERCENTAGE']],
+        on=['YEAR', 'MONTH_NUM'],
+        how='left'
+    )
     
-    return df
+    # Create date column
+    merged_df['DATE'] = pd.to_datetime(merged_df.apply(lambda x: f"{x['YEAR']}-{x['MONTH_NUM']:02d}-01", axis=1))
+    
+    return merged_df
 
 def predict_mechanical_failures(data, target_month=None):
-    X = data[['YEAR', 'MONTH_NUM']].values
+    # Prepare features
+    X = data[['YEAR', 'MONTH_NUM', 'MEAN_DISTANCE_BEFORE_FAILURE', 'ON_TIME_PERCENTAGE']].values
     y = data['CANCEL_PERCENTAGE'].values
     
-    model = LinearRegression()
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X, y)
     
     if target_month:
         # Predict for specific month across years
         years = range(data['YEAR'].min(), data['YEAR'].max() + 2)
-        future_dates = [[year, target_month] for year in years]
+        
+        # Use average values for other features
+        avg_distance = data['MEAN_DISTANCE_BEFORE_FAILURE'].mean()
+        avg_ontime = data['ON_TIME_PERCENTAGE'].mean()
+        
+        future_dates = [[year, target_month, avg_distance, avg_ontime] for year in years]
         predictions = model.predict(np.array(future_dates))
         return future_dates, predictions
     else:
@@ -50,16 +66,37 @@ def predict_mechanical_failures(data, target_month=None):
         current_year = data['YEAR'].max()
         current_month = data['MONTH_NUM'].max()
         
+        avg_distance = data['MEAN_DISTANCE_BEFORE_FAILURE'].mean()
+        avg_ontime = data['ON_TIME_PERCENTAGE'].mean()
+        
         future_dates = []
         for i in range(1, 7):
             month = (current_month + i) % 12
             if month == 0:
                 month = 12
             year = current_year + (current_month + i - 1) // 12
-            future_dates.append([year, month])
+            future_dates.append([year, month, avg_distance, avg_ontime])
         
         predictions = model.predict(np.array(future_dates))
         return future_dates, predictions
+
+def show_feature_importance(data):
+    X = data[['YEAR', 'MONTH_NUM', 'MEAN_DISTANCE_BEFORE_FAILURE', 'ON_TIME_PERCENTAGE']]
+    y = data['CANCEL_PERCENTAGE']
+    
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model.fit(X, y)
+    
+    importance_df = pd.DataFrame({
+        'Feature': X.columns,
+        'Importance': model.feature_importances_
+    }).sort_values('Importance', ascending=False)
+    
+    fig = px.bar(importance_df, 
+                 x='Feature', 
+                 y='Importance',
+                 title='Feature Importance for Prediction Model')
+    return fig
 
 def create_monthly_heatmap(df):
     # Pivot data for heatmap
@@ -92,10 +129,12 @@ def create_monthly_heatmap(df):
 
 def main():
     st.title("🚂 NJ Transit Rail Mechanical Cancellations Analysis")
-        # Display explanation image
+    
+    # Display explanation image
     st.image('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/assets/output.png',
              caption='Distribution of Cancellation Categories',
              use_column_width=True)
+    
     # Load data
     df = load_data()
     
@@ -145,6 +184,24 @@ def main():
                      labels={'CANCEL_PERCENTAGE': 'Cancellation Rate (%)',
                             'MONTH': 'Month'})
     st.plotly_chart(fig_box, use_container_width=True)
+
+    # Feature Importance
+    st.header("Prediction Model Insights")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.plotly_chart(show_feature_importance(df), use_container_width=True)
+    
+    with col2:
+        st.write("""
+        ### Model Features:
+        - Mean Distance Before Failure: Average distance traveled before a mechanical issue occurs
+        - On-Time Percentage: Overall performance metric
+        - Month: Seasonal patterns
+        - Year: Long-term trends
+        
+        This enhanced model considers multiple factors to provide more accurate predictions.
+        """)
 
     # Prediction Section
     st.header("Mechanical Failure Predictions")

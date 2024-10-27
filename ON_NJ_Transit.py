@@ -85,7 +85,21 @@ st.markdown("""
     </p>
     </div>
     """, unsafe_allow_html=True)
-
+# Mechanical Failure Analysis Feature
+st.markdown("""
+    <div class="feature-card">
+    <h3>🔧 Mechanical Failure Analysis</h3>
+    <p class="description-text">
+    Advanced diagnostics and predictive maintenance insights:
+    <ul>
+        <li>Monitoring of train mechanical systems by month and year</li>
+        <li>Predictive analytics for potential mechanical failures</li>
+        <li>Historical maintenance data analysis</li>
+        <li>Proactive maintenance recommendations to prevent delays</li>
+    </ul>
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
 # AI Support Feature
 st.markdown("""
     <div class="feature-card">
