@@ -69,7 +69,7 @@ day_of_week = st.selectbox("Day of the Week",
                            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 
 # Load the trained model
-model = joblib.load('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/models/delay_prediction_model.joblib')
+model = joblib.load('models/delay_prediction_model.joblib')
 
 # Function to map day of week to number
 def day_to_number(day):
