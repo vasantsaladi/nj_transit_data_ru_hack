@@ -2,22 +2,33 @@
 pandas
 numpy
 
-# Ploting
+# Plotting
 plotly
+matplotlib
+seaborn
 
-# Taipy for web app and dashboard creation
+# Web app frameworks
+streamlit
 taipy
 
 # Machine learning
 scikit-learn
 
-# Matplotlib
-matplotlib
-
 # Testing
 pytest
 
-# Seaborn
-seaborn
+# Geospatial visualization
+folium
+streamlit-folium
 
-# data : https://www.kaggle.com/code/minabagherzade/nj-transit-rail-performance/input
+# Date and time handling
+python-dateutil
+
+# Data processing
+openpyxl
+
+# Additional utilities
+tqdm
+
+# Note: Data source
+# https://www.kaggle.com/code/minabagherzade/nj-transit-rail-performance/input
