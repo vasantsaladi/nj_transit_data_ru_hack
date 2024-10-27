@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import joblib
-import streamlit.components.v1 as components
+
 # Page configuration
 st.set_page_config(
     page_title="NJ Transit Rail Delay Prediction",
@@ -69,7 +69,7 @@ day_of_week = st.selectbox("Day of the Week",
                            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 
 # Load the trained model
-model = joblib.load('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/models/delay_prediction_model.joblib')
+model = joblib.load('models/delay_prediction_model.joblib')
 
 # Function to map day of week to number
 def day_to_number(day):
@@ -117,4 +117,3 @@ st.write(f"**Hour of the Day:** {time_input}")
 st.write(f"**From Station:** {from_station} (ID: {from_id})")
 st.write(f"**To Station:** {to_station} (ID: {to_id})")
 st.write(f"**Day of the Week:** {day_of_week}")
-
