@@ -1,15 +1,83 @@
 import streamlit as st
+from PIL import Image
 import json
 from datetime import datetime
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
+# Page configuration
+st.set_page_config(
+    page_title="NJ Transit Support",
+    page_icon="🚂",
+    layout="wide"
+)
+
 # Load environment variables
 load_dotenv()
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
+# Custom CSS for responsive design
+st.markdown("""
+    <style>
+    .responsive-title {
+        font-size: calc(1.5rem + 1.5vw);
+        font-weight: bold;
+        line-height: 1.2;
+        padding-top: 0.5rem;
+    }
+    
+    .chat-message {
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa;
+    }
+    
+    .timestamp {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    .stButton button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        transition: background-color 0.15s ease-in-out;
+    }
+    
+    .stButton button:hover {
+        background-color: #c82333;
+    }
+    
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
+
+# Load and display the logo with title beside it
+logo_path = "assets/new_jesry_transit_logo.png"
+logo = Image.open(logo_path)
+
+col1, col2 = st.columns([1, 3])
+
+with col1:
+    st.image(logo, use_column_width=True)
+
+with col2:
+    st.markdown('<p class="responsive-title">NJ Transit Support Assistant 💬</p>', unsafe_allow_html=True)
+
+# Add a divider
+st.markdown("<hr>", unsafe_allow_html=True)
+
+# Keep the existing functions (load_faqs, create_context_from_faqs, get_chatbot_response)
+# ... (your existing functions remain the same)
+# ... keep previous imports and page config ...
 
 # Load FAQs data
 def load_faqs():
@@ -66,7 +134,6 @@ def get_chatbot_response(prompt, conversation_history, faqs_context):
         # Add user's new prompt
         messages.append({"role": "user", "content": prompt})
         
-        # Updated API call format
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
@@ -77,7 +144,6 @@ def get_chatbot_response(prompt, conversation_history, faqs_context):
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"I apologize, but I'm having trouble responding right now. Please try again later. Error: {str(e)}"
-
 # Initialize session states
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -88,90 +154,39 @@ if "faqs" not in st.session_state:
         st.session_state.faqs_context = create_context_from_faqs(st.session_state.faqs)
     else:
         st.session_state.faqs_context = "You are an NJ Transit support assistant. Please provide general help."
+# ... (previous imports and config remain the same)
 
-# Chat interface styling
+# After the title and before the chat container, add example questions
 st.markdown("""
-<style>
-.chat-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 350px;
-    max-height: 500px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    z-index: 1000;
-}
-
-.chat-header {
-    background: #1E90FF;
-    color: white;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
-    font-weight: bold;
-}
-
-.chat-messages {
-    padding: 10px;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.timestamp {
-    font-size: 0.7em;
-    color: #888;
-    margin-top: 2px;
-}
-
-.source-info {
-    font-size: 0.8em;
-    color: #666;
-    font-style: italic;
-    margin-top: 5px;
-}
-
-/* Custom scrollbar */
-.chat-messages::-webkit-scrollbar {
-    width: 6px;
-}
-
-.chat-messages::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-}
-</style>
+<div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;'>
+    <h4 style='color: #0066cc; margin-bottom: 10px;'>Example questions you can ask:</h4>
+    <ul style='margin-bottom: 0;'>
+        <li>How do I purchase tickets using the NJ TRANSIT Mobile App?</li>
+        <li>What payment methods are accepted in the app?</li>
+        <li>How do I activate my ticket?</li>
+        <li>What should I do if my ticket doesn't scan properly?</li>
+        <li>How do I create a My Transit account?</li>
+    </ul>
+</div>
 """, unsafe_allow_html=True)
 
-# Chat container
-with st.container():
-    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
-    
-    # Chat header
-    st.markdown('<div class="chat-header">💬 NJ Transit Support</div>', unsafe_allow_html=True)
-    
-    # Messages area
-    st.markdown('<div class="chat-messages">', unsafe_allow_html=True)
-    
+# Add a divider
+st.markdown("<hr>", unsafe_allow_html=True)
+
+
+# Main chat container
+container = st.container()
+with container:
     # Display chat messages
     for message in st.session_state.messages:
-        try:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-                if "timestamp" in message:
-                    st.markdown(f'<div class="timestamp">{message["timestamp"]}</div>', 
-                              unsafe_allow_html=True)
-        except Exception as e:
-            st.error(f"Error displaying message: {str(e)}")
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+            if "timestamp" in message:
+                st.markdown(f'<div class="timestamp">{message["timestamp"]}</div>', 
+                          unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-    
     # Chat input
-    if prompt := st.chat_input("Ask about NJ Transit...", key="chat_input"):
+    if prompt := st.chat_input("How can I help you with NJ Transit today?"):
         current_time = datetime.now().strftime("%I:%M %p")
         
         # Add user message
@@ -195,10 +210,11 @@ with st.container():
             "timestamp": current_time
         })
         
-        # Rerun to update chat
         st.rerun()
 
-# Clear chat button
-if st.button("Clear Chat", key="clear_chat"):
-    st.session_state.messages = []
-    st.rerun()
+# Clear chat button with better positioning
+col1, col2, col3 = st.columns([6, 1, 1])
+with col3:
+    if st.button("🗑️ Clear Chat", help="Clear chat history"):
+        st.session_state.messages = []
+        st.rerun()
