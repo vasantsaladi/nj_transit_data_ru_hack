@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import joblib
-
+import streamlit.components.v1 as components
 # Page configuration
 st.set_page_config(
     page_title="NJ Transit Rail Delay Prediction",
@@ -117,3 +117,4 @@ st.write(f"**Hour of the Day:** {time_input}")
 st.write(f"**From Station:** {from_station} (ID: {from_id})")
 st.write(f"**To Station:** {to_station} (ID: {to_id})")
 st.write(f"**Day of the Week:** {day_of_week}")
+
