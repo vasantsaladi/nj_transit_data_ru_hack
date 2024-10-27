@@ -13,8 +13,8 @@ st.set_page_config(layout="wide", page_title="NJ Transit Mechanical Cancellation
 @st.cache_data
 def load_data():
     # Load both datasets
-    mechanical_df = pd.read_csv('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/data/RAIL_CANCELLATIONS_DATA.csv')
-    train_df = pd.read_csv('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/data/Combined/cleaned_train_data.csv')
+    mechanical_df = pd.read_csv('data/RAIL_CANCELLATIONS_DATA.csv')
+    train_df = pd.read_csv('data/Combined/cleaned_train_data.csv')
     
     # Clean mechanical data
     mechanical_df['MONTH'] = mechanical_df['MONTH'].str.strip()
@@ -131,7 +131,7 @@ def main():
     st.title("🚂 NJ Transit Rail Mechanical Cancellations Analysis")
     
     # Display explanation image
-    st.image('/Users/chetan/Documents/GitHub/nj_transit_data_ru_hack/assets/output.png',
+    st.image('assets/output.png',
              caption='Distribution of Cancellation Categories',
              use_column_width=True)
     

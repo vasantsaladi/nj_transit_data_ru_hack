@@ -75,9 +75,7 @@ with col2:
 # Add a divider
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# Keep the existing functions (load_faqs, create_context_from_faqs, get_chatbot_response)
-# ... (your existing functions remain the same)
-# ... keep previous imports and page config ...
+
 
 # Load FAQs data
 def load_faqs():
@@ -104,7 +102,6 @@ def load_faqs():
         return []
 
 def create_context_from_faqs(faqs):
-    """Create a context string from FAQs for the system message"""
     context = "You are an NJ Transit support assistant. Here are the official FAQs you should base your answers on:\n\n"
     for faq in faqs:
         context += f"Section: {faq['section']}\n"
