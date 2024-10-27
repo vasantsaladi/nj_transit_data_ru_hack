@@ -38,3 +38,6 @@ openai
 
 # xgboost
 xgboost
+
+# Statsmodels
+statsmodels
