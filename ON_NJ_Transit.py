@@ -25,7 +25,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Load and display the logo with title beside it
-logo_path = "assets/new_jesry_transit_logo.png"
+logo_path = "/Users/vasantsaladi/Documents/GitHub/nj_transit_data_ru_hack/assets/new_jesry_transit_logo.png"
 logo = Image.open(logo_path)
 
 col1, col2 = st.columns([1, 3])  # Adjust the ratio as needed
