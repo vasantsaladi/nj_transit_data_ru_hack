@@ -1,13 +1,13 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Hello",
-    page_icon="👋",
+    page_title="NJ Transit Rail Delay Prediction",
+    page_icon="",
 )
 
-st.write("# Welcome to Streamlit! 👋")
+st.write("# Welcome to NJ Transit Rail Delay Prediction 👋")
 
-st.sidebar.success("Select a demo above.")
+st.sidebar.success("Station")
 st.markdown(
     """
     Streamlit is an open-source app framework built specifically for
