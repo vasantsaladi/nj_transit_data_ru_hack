@@ -74,7 +74,6 @@ nj_transit_data_ru_hack/
 
 - **85%+** delay prediction accuracy
 - **24/7** customer support
-- **50%** reduction in response time
 - **30%** improvement in maintenance efficiency
 
 ## 👥 Team
