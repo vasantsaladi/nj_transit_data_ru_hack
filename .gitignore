@@ -11,3 +11,5 @@ models/delay_prediction_model.joblib
 
 #ignores streamlit toml file
 .streamlit/secrets.toml
+
+secrets.toml
