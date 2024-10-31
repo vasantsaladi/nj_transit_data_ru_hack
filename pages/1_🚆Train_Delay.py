@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import joblib
+from huggingface_hub import hf_hub_download
 
 # Page configuration
 st.set_page_config(
@@ -68,7 +69,24 @@ day_of_week = st.selectbox("Day of the Week",
                            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 
 # Load the trained model
-model = joblib.load('models/delay_prediction_model.joblib')
+# Replace the model loading line:
+# model = joblib.load('models/delay_prediction_model.joblib')
+# with:
+
+def load_model():
+    try:
+        model_path = hf_hub_download(
+            repo_id="vsaladi/nj_transit_delay",  # Your actual Hugging Face repo
+            filename="delay_prediction_model.joblib",
+            token=st.secrets["HF_TOKEN"]
+        )
+        return joblib.load(model_path)
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
+
+# Load the model once when the app starts
+model = load_model()
 
 # Function to map day of week to number
 def day_to_number(day):
