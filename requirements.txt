@@ -4,41 +4,22 @@ numpy
 
 # Plotting
 plotly
-matplotlib
-seaborn
 
-# Web app frameworks
+# Web app framework
 streamlit
-taipy
 
 # Machine learning
 scikit-learn
 
-# Testing
-pytest
-
-# Geospatial visualization
-folium
-streamlit-folium
-
-# Date and time handling
-python-dateutil
-
 # Data processing
 openpyxl
 
-# Additional utilities
-tqdm
-
-# Note: Data source
-# https://www.kaggle.com/code/minabagherzade/nj-transit-rail-performance/input
-
-# openai
+# AI/ML packages
 openai
-
-# xgboost
-xgboost
-
-# Statsmodels
-statsmodels
 huggingface_hub
+
+# Additional utilities
+python-dateutil
+
+# Environment variables
+python-dotenv
