@@ -18,6 +18,9 @@ openpyxl
 openai
 huggingface_hub
 
+# Statistical modeling
+statsmodels
+
 # Additional utilities
 python-dateutil
 
