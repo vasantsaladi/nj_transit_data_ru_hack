@@ -40,5 +40,5 @@ openai
 xgboost
 
 # Statsmodels
-statsmodelshuggingface_hub
+statsmodels
 huggingface_hub
